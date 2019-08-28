@@ -1,4 +1,4 @@
-FROM openjdk:8u181-jre-stretch as builder
+FROM openjdk:8u222-jre-slim-buster as builder
 
 ARG VERSION=7.8.0
 ARG DISTRO=tomcat
@@ -10,6 +10,7 @@ ARG PASSWORD
 
 #RUN apk add --no-cache \
 #        ca-certificates \
+#        maven \
 #        tar \
 #        wget \
 #        xmlstarlet
@@ -17,14 +18,14 @@ ARG PASSWORD
 RUN apt-get update \
     && apt-get install -y xmlstarlet
 
-COPY download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
+COPY settings.xml download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
 
 RUN /tmp/download.sh
 
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8u181-jre-stretch
+FROM openjdk:8u222-jre-slim-buster
 
 ARG VERSION=7.8.0
 

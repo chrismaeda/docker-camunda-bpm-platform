@@ -1,4 +1,5 @@
-FROM openjdk:8u222-jre-slim-buster as builder
+# 20200708 Debian 9 "Stretch" uses Java 8
+FROM openjdk:8-jre-stretch as builder
 
 ARG VERSION=7.8.0
 ARG DISTRO=tomcat
@@ -16,7 +17,7 @@ ARG PASSWORD
 #        xmlstarlet
 
 RUN apt-get update \
-    && apt-get install -y xmlstarlet
+    && apt-get install -y xmlstarlet maven wget
 
 COPY settings.xml download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
 
@@ -25,7 +26,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8u222-jre-slim-buster
+FROM openjdk:8-jre-stretch
 
 ARG VERSION=7.8.0
 
@@ -61,10 +62,11 @@ EXPOSE 8080 8000
 
 # DEBIAN
 RUN apt-get update \
+    && apt-get install -y wget \
     && apt-get install -y xmlstarlet \
     && apt-get install -y libnetty-tcnative-java \
-    && wget -O /tmp/tini_0.18.0-amd64.deb https://github.com/krallin/tini/releases/download/v0.18.0/tini_0.18.0-amd64.deb \
-    && dpkg -i /tmp/tini_0.18.0-amd64.deb \
+    && wget -O /tmp/tini_0.19.0-amd64.deb https://github.com/krallin/tini/releases/download/v0.19.0/tini_0.19.0-amd64.deb \
+    && dpkg -i /tmp/tini_0.19.0-amd64.deb \
     && wget -O /usr/local/bin/wait-for-it.sh \
       "https://raw.githubusercontent.com/vishnubob/wait-for-it/db049716e42767d39961e95dd9696103dca813f1/wait-for-it.sh" \
     && chmod +x /usr/local/bin/wait-for-it.sh

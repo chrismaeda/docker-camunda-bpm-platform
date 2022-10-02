@@ -13,18 +13,14 @@ function tag_and_push {
     docker push ${IMAGE}:${tag}
 }
 
-if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
-    echo "Not pushing pull request to docker hub"
-    exit 0
-fi
-
-if ! [[ "${TRAVIS_BRANCH}" =~ master|7.[0-9]+|next ]]; then
-    echo "Not pushing development branch to docker hub"
-    exit 0
-fi
-
 if [ "${EE}" = "true" ]; then
     echo "Not pushing EE image to docker hub"
+    exit 0
+fi
+
+# check whether the CE image for distro was already released and exit in that case
+if [ $(docker manifest inspect $IMAGE:${DISTRO}-${VERSION} > /dev/null ; echo $?) == '0' ]; then
+    echo "Not pushing already released CE image"
     exit 0
 fi
 
@@ -45,7 +41,7 @@ else
     fi
 fi
 
-git fetch origin master
+git fetch origin next 
 if [ $(git rev-parse HEAD) = $(git rev-parse FETCH_HEAD) ]; then
     # tagging image as latest
     tag_and_push "${DISTRO}-latest"

@@ -1,7 +1,7 @@
 # Camunda Platform Docker images
 
 > Use our [GitHub issue tracker](https://github.com/camunda/camunda-bpm-platform/issues) for bug reports or feature requests.
-> For help requests, open a help request topic on the [Camunda forum](https://forum.camunda.org/) or [a help request support ticket](https://docs.camunda.org/enterprise/support/#how-to-create-a-support-issue) if you are an enterprise customer.
+> For help requests, open a help request topic on the [Camunda forum](https://forum.camunda.org/) or [a help request support ticket](https://camunda.com/services/enterprise-support-guide/#how-to-create-a-support-issue) if you are an enterprise customer.
 
 This Camunda project provides docker images of the latest 
 Camunda Platform releases. The images can be used to demonstrate and test the
